@@ -41,7 +41,7 @@ function Navbar({ user }) {
 
   const onBtnLogout = () => {
     localStorage.removeItem("userToken");
-    navigate("/login");
+    navigate("/");
     toast.success("Logout Success!");
   };
   return (

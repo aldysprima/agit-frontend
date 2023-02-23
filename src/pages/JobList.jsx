@@ -71,18 +71,26 @@ const JobList = () => {
           </FormGroup>
         </Stack>
         <Stack flex={3} spacing={1}>
-          {positions ? (
-            positions.map((position) => {
-              return (
-                <JobListCard
-                  key={position.id}
-                  position={position}
-                  handleClick={() => handleClick(position.id)}
-                />
-              );
-            })
-          ) : (
-            <Typography>No Data</Typography>
+          {positions
+            ? positions.map((position) => {
+                return (
+                  <JobListCard
+                    key={position.id}
+                    position={position}
+                    handleClick={() => handleClick(position.id)}
+                  />
+                );
+              })
+            : null}
+          {positions.length === 0 && (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              minHeight="70vh"
+            >
+              <Typography>No Data</Typography>
+            </Box>
           )}
         </Stack>
       </Box>
