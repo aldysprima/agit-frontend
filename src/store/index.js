@@ -23,10 +23,14 @@ export const store = create((set) => ({
       set({ isLoading: false });
     }
   },
-  fetchPositions: async () => {
+  fetchPositions: async (description, location, full_time) => {
     set({ isLoading: true });
     try {
-      const response = await ApiRepository.getPositions();
+      const response = await ApiRepository.getPositions(
+        description,
+        location,
+        full_time
+      );
       set({ positions: await response.data, isLoading: false });
     } catch (error) {
       set({ isLoading: false });

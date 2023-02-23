@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -16,16 +16,32 @@ import { store } from "../store";
 const JobList = () => {
   const { user, positions, fetchPositions } = store((state) => state);
   const navigate = useNavigate();
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [full_time, setFull_time] = useState(false);
+
+  const handleDescription = (e) => {
+    setDescription(e.target.value);
+  };
+  const handleLocation = (e) => {
+    setLocation(e.target.value);
+  };
+  const handleFullTime = () => {
+    setFull_time(!full_time);
+  };
+
+  console.log("location", location);
+  console.log("description", description);
+  console.log("fulltime", full_time);
 
   useEffect(() => {
-    fetchPositions();
-  }, []);
+    fetchPositions(description, location, full_time);
+  }, [description, location, full_time]);
 
   const handleClick = (id) => {
     navigate(`/job-detail/${id}`);
   };
 
-  console.log(positions);
   return (
     <>
       <Navbar user={user} />
@@ -38,28 +54,35 @@ const JobList = () => {
           spacing={1}
         >
           <Typography>Filter Jobs</Typography>
-          <TextField placeholder="Search by job description" />
-          <TextField placeholder="Search by location" />
+          <TextField
+            placeholder="Search by job description"
+            onChange={handleDescription}
+          />
+          <TextField
+            placeholder="Search by location"
+            onChange={handleLocation}
+          />
           <FormGroup>
-            <FormControlLabel control={<Checkbox />} label="Full Time Only" />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Full Time Only"
+              onClick={handleFullTime}
+            />
           </FormGroup>
         </Stack>
         <Stack flex={3} spacing={1}>
-          {positions
-            ? positions.map((position) => {
-                return (
-                  <JobListCard
-                    key={position.id}
-                    position={position}
-                    handleClick={() => handleClick(position.id)}
-                  />
-                );
-              })
-            : null}
-          {!positions && (
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <Typography>No Data</Typography>
-            </Box>
+          {positions ? (
+            positions.map((position) => {
+              return (
+                <JobListCard
+                  key={position.id}
+                  position={position}
+                  handleClick={() => handleClick(position.id)}
+                />
+              );
+            })
+          ) : (
+            <Typography>No Data</Typography>
           )}
         </Stack>
       </Box>
