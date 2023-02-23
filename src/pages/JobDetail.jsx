@@ -14,7 +14,6 @@ const JobDetail = () => {
     fetchPositionById(params.id);
   }, []);
 
-  console.log(position);
   return (
     <>
       <Navbar user={user} />

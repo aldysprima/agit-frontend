@@ -34,7 +34,6 @@ export const store = create((set) => ({
       set({ positions: await response.data, isLoading: false });
     } catch (error) {
       set({ isLoading: false });
-      console.log(error.response.data);
     }
   },
   fetchPositionById: async (id) => {
@@ -44,7 +43,6 @@ export const store = create((set) => ({
       set({ position: await response.data[0], isLoading: false });
     } catch (error) {
       set({ isLoading: false });
-      console.log(error.response.data);
     }
   },
 }));

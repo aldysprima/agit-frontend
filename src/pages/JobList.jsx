@@ -30,9 +30,6 @@ const JobList = () => {
     setFull_time(!full_time);
   };
 
-  console.log("location", location);
-  console.log("description", description);
-  console.log("fulltime", full_time);
 
   useEffect(() => {
     fetchPositions(description, location, full_time);
