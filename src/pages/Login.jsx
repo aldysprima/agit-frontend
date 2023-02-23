@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -9,10 +10,16 @@ import {
   Typography,
 } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { store } from "../store";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const navigate = useNavigate();
   const email = useRef();
   const password = useRef();
+
+  // import reducer
+  const { isLoading, login } = store((state) => state);
   // Toggle Visibility
   const [visible, setVisible] = useState(false);
   const showPassword = () => {
@@ -26,11 +33,11 @@ const Login = () => {
   // Handle login
   const handleLogin = () => {
     const data = {
-      email: email.current.value,
+      user: email.current.value,
       password: password.current.value,
     };
 
-    console.log(data);
+    login(data, navigate, toast);
   };
 
   return (
@@ -59,7 +66,7 @@ const Login = () => {
           <Typography fontSize="30px" fontWeight={500}>
             Sign in to Jobsearch
           </Typography>
-          <TextField label="Email Address" inputRef={email} />
+          <TextField label="Username/Email Address" inputRef={email} />
           <TextField
             label="Password"
             type={visible ? "text" : "password"}
@@ -83,6 +90,7 @@ const Login = () => {
                 backgroundColor: "#200B36",
               },
             }}
+            disabled={isLoading ? true : false}
           >
             Login
           </Button>

@@ -1,18 +1,16 @@
 import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Avatar,
-  Badge,
   Box,
-  InputBase,
   Menu,
   MenuItem,
   styled,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { Mail, Notifications } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -25,7 +23,27 @@ const Icons = styled(Box)(({ theme }) => ({
   alignItems: "center",
 }));
 
-function Navbar() {
+function Navbar({ user }) {
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const divRef = useRef();
+  const navigate = useNavigate();
+
+  const onOpen = () => {
+    setOpen(true);
+    setAnchorEl(divRef.current);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
+  };
+
+  const onBtnLogout = () => {
+    localStorage.removeItem("userToken");
+    navigate("/login");
+    toast.success("Logout Success!");
+  };
   return (
     <AppBar position="sticky" sx={{ bgcolor: "#313638" }}>
       <StyledToolbar>
@@ -38,16 +56,18 @@ function Navbar() {
           justifyContent="space-between"
           width="220px"
         >
-          <Typography>Welcome, aldysprima</Typography>
+          <Typography>Welcome, {user?.username}</Typography>
           <Icons>
-            <Avatar sx={{ cursor: "pointer" }} />
+            <Avatar sx={{ cursor: "pointer" }} onClick={onOpen} ref={divRef} />
           </Icons>
         </Box>
       </StyledToolbar>
       <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
-        // anchorEl={anchorEl}
+        open={open}
+        onClose={onClose}
+        anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "top",
           horizontal: "right",
@@ -57,16 +77,8 @@ function Navbar() {
           horizontal: "right",
         }}
       >
-        <Link style={{ textDecoration: "none", color: "inherit" }} to="/home">
-          <MenuItem>Home</MenuItem>
-        </Link>
-        <Link
-          style={{ textDecoration: "none", color: "inherit" }}
-          to="/profile"
-        >
-          <MenuItem>Profile</MenuItem>
-        </Link>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem>Profile</MenuItem>
+        <MenuItem onClick={onBtnLogout}>Logout</MenuItem>
       </Menu>
     </AppBar>
   );
