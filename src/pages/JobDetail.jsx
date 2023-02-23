@@ -2,15 +2,20 @@ import { Box, Stack, Typography } from "@mui/material";
 import Navbar from "../components/Navbar";
 import { useEffect } from "react";
 import { store } from "../store";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import HtmlParser from "html-react-parser";
 
 const JobDetail = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const { fetchPositionById, isLoading, position, user } = store(
     (state) => state
   );
   useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      navigate("/");
+    }
     fetchPositionById(params.id);
   }, []);
 

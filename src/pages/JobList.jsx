@@ -30,8 +30,11 @@ const JobList = () => {
     setFull_time(!full_time);
   };
 
-
   useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    if (!token) {
+      navigate("/");
+    }
     fetchPositions(description, location, full_time);
   }, [description, location, full_time]);
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -39,6 +39,13 @@ const Login = () => {
 
     login(data, navigate, toast);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("userToken");
+    if (token) {
+      navigate("/job-list");
+    }
+  }, []);
 
   return (
     <Box
